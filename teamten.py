@@ -1,7 +1,4 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-import networkx as nx
-import subprocess
 import cpg_manipulation
 import joernscan
 
@@ -29,3 +26,9 @@ joernscan.run_joern_export(csv_output_path)
 
 # create cpg dataframes from exported csv files
 cpg_df = cpg_manipulation.process_csv(csv_output_path)
+
+boflow_AST = cpg_manipulation.build_graph(cpg_df, 'AST')
+boflow_CALL = cpg_manipulation.build_graph(cpg_df, 'CALL')
+boflow_CFG = cpg_manipulation.build_graph(cpg_df, 'CFG')
+
+cpg_manipulation.visualize_graph(boflow_AST, 'METHOD_FULL_NAME:string')

@@ -21,7 +21,7 @@ def consolidate_csv(pattern):
             df = pd.read_csv(file, header=None, names=columns)
             dfs.append(df)
         else:
-            print(f"Header file {header_file} not found for data file {data_file}.")
+            print(f"Header file {header_file} not found for data file {file}.")
     if dfs:
         return pd.concat(dfs, ignore_index=True)
     else:
