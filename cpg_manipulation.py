@@ -1,7 +1,5 @@
 import os
-import subprocess
 import glob
-import io
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -29,24 +27,6 @@ def consolidate_csv(pattern):
     else:
         return pd.DataFrame()
     
-def process_cpg_folders(directory):
-    cpg_df = {}
-    for folder in os.listdir(directory):
-        # ignore joern folder 'workspace'
-        if folder == "workspace": continue
-        folder_path = os.path.join(directory, folder)
-        if os.path.isdir(folder_path):
-            #print(f"Processing folder: {folder}")
-            # Build glob patterns for node and edge data files
-            nodes_pattern = os.path.join(folder_path, "nodes_*_data.csv")
-            edges_pattern = os.path.join(folder_path, "edges_*_data.csv")
-            
-            nodes_df = consolidate_csv(nodes_pattern)
-            edges_df = consolidate_csv(edges_pattern)
-            
-            cpg_df[folder] = {"nodes": nodes_df, "edges": edges_df}
-    return cpg_df
-    
 def process_csv(directory):
     cpg_df = {}
     print(f"Processing {directory}")
@@ -59,55 +39,6 @@ def process_csv(directory):
     cpg_df = {"nodes": nodes_df, "edges": edges_df}
     return cpg_df
 
-def print_dataframe_shapes(dict1, dict2, keys):
-    # Print header
-    print(f"{'cpg':<20} {'vuln nodes':<15} {'ptchd nodes':<15} {'vuln edges':<15} {'ptchd edges':<15}")
-    print("-" * 80)
-    
-    # Print shapes for each key
-    for key in keys:
-        dict1_item1_shape = "Not found"
-        dict1_item2_shape = "Not found"
-        dict2_item1_shape = "Not found"
-        dict2_item2_shape = "Not found"
-        
-        # Get shapes from dict1
-        if key in dict1:
-            nested_dict1 = dict1[key]
-            if len(nested_dict1) == 2:
-                nested_keys = list(nested_dict1.keys())
-                dict1_item1_shape = str(nested_dict1[nested_keys[0]].shape)
-                dict1_item2_shape = str(nested_dict1[nested_keys[1]].shape)
-        
-        # Get shapes from dict2
-        if key in dict2:
-            nested_dict2 = dict2[key]
-            if len(nested_dict2) == 2:
-                nested_keys = list(nested_dict2.keys())
-                dict2_item1_shape = str(nested_dict2[nested_keys[0]].shape)
-                dict2_item2_shape = str(nested_dict2[nested_keys[1]].shape)
-        
-        print(f"{key:<20} {dict1_item1_shape:<15} {dict2_item1_shape:<15} {dict1_item2_shape:<15} {dict2_item2_shape:<15}")
-
-def cpg_compare_counts(df1, df2):
-    # Capture output for first dataframe
-    buffer1 = io.StringIO()
-    df1.info(buf=buffer1)
-    info1 = buffer1.getvalue().splitlines()
-
-    # Capture output for second dataframe
-    buffer2 = io.StringIO()
-    df2.info(buf=buffer2)
-    info2 = buffer2.getvalue().splitlines()
-
-    # Determine maximum number of lines
-    max_lines = max(len(info1), len(info2))
-
-    # Print the outputs side by side
-    for i in range(max_lines):
-        left = info1[i] if i < len(info1) else ""
-        right = info2[i] if i < len(info2) else ""
-        print(f"{left:<50} {right}")
 
 def build_graph(cpg: dict, subgraph: str) -> nx.DiGraph:
     subgraph = subgraph.upper()
