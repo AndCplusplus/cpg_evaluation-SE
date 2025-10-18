@@ -80,3 +80,42 @@ def parse_result_line(result_line):
     caller = parts[4]
 
     return (severity, type_str, filename, line_number, caller)
+
+def run_joern_parse(directory):
+    """
+    Given a codepath, runs joern-parse on it to generate CPG data.
+    """
+    try:
+        process = subprocess.run(
+            ['joern-parse', directory],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+
+        # output contains both standard output and any errors
+        output = process.stdout + process.stderr
+        print(f'joern-parse output for {directory}:\n{output}')
+
+    except Exception as e:
+        print(f'error running joern-parse on {directory}: {e}')
+
+
+def run_joern_export(output_directory):
+    """
+    Given an output directory, runs joern-export to export CPG data to CSV files.
+    """
+    try:
+        process = subprocess.run(
+            ['joern-export --repr=all --format=neo4jcsv --out=', output_directory],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+
+        # output contains both standard output and any errors
+        output = process.stdout + process.stderr
+        print(f'joern-export output for {output_directory}:\n{output}')
+
+    except Exception as e:
+        print(f'error running joern-export on {output_directory}: {e}')
