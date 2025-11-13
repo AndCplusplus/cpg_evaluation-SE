@@ -41,9 +41,23 @@ class VulnerabilityScannerApp:
                 messagebox.showerror("Invalid File", "Please select a .c file.")
                 return
 
+        #  -----------  EMPTY SOURCE FOLDER BEFORE UPLOAD  -----------
         source_dir = os.path.join(os.getcwd(), "source")
         os.makedirs(source_dir, exist_ok=True)
 
+        for filename in os.listdir(source_dir):
+            file_path = os.path.join(source_dir, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                   os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                   shutil.rmtree(file_path)
+            except Exception as e:
+                messagebox.showerror("Cleanup Failed", f"Failed to delete {file_path}: {str(e)}")
+                return
+        #  -------------------------------------------------------------
+
+        
         filename = os.path.basename(original_path)
         destination_path = os.path.join(source_dir, filename)
 
