@@ -27,6 +27,14 @@ class VulnerabilityScannerApp:
         self.canvas_frame = tk.Frame(root)
         self.canvas_frame.pack(fill=tk.BOTH, expand=True)
 
+        # Select Graph Type
+        self.graph_type = tk.StringVar(value="CFG")
+        graph_options = ["CFG", "CALL", "AST"]
+        self.graph_menu = tk.OptionMenu(root, self.graph_type, *graph_options)
+        self.graph_menu.pack(pady=10)
+
+
+
 #  -----------  UPLOAD FILE FUNCTION  -----------
     def upload_file(self):
 #        self.file_path = filedialog.askopenfilename()
@@ -76,10 +84,33 @@ class VulnerabilityScannerApp:
 
 
 #  -----------  SCAN FILE FUNCTION  -----------
+
+
+# --------code to integrate joern and replace placeholder, will test when I have a working copy   ------------- 
+#    def scan_file(self):
+#    if not self.file_path:
+#        messagebox.showwarning("No File", "Please upload a file first.")
+#        return
+#
+#    try:
+#        result = os.popen(f"flawfinder {self.file_path}").read()
+#        vulnerabilities = self.parse_flawfinder_output(result)
+#        self.plot_vulnerabilities(vulnerabilities)
+#    except Exception as e:
+#        messagebox.showerror("Scan Failed", str(e))
     def scan_file(self):
         if not self.file_path:
             messagebox.showwarning("No File", "Please upload a file first.")
             return
+
+        ### Graph Selection Code
+        selected_graph = self.graph_type.get()
+        vulnerabilities = self.mock_scan(self.file_path, selected_graph)
+        self.plot_vulnerabilities(vulnerabilities, selected_graph)
+        ###
+
+
+        
 
         # Placeholder: Replace with your actual scanning logic
         vulnerabilities = self.mock_scan(self.file_path)
@@ -95,24 +126,49 @@ class VulnerabilityScannerApp:
             "CSRF": 2,
             "Open Redirect": 1
         }
+    def mock_scan(self, path, graph_type):
+       if graph_type == "CFG":
+           return {"Loops": 4, "Branches": 6, "Dead Code": 2}
+       elif graph_type == "CALL":
+           return {"Recursive Calls": 3, "External Calls": 5, "Unresolved": 1}
+       elif graph_type == "AST":
+           return {"Unsafe Functions": 2, "Global Variables": 4, "Magic Numbers": 3}
+
+
 #  -----------  SCAN FILE FUNCTION  -----------
 
 
 #  -----------  PLOT VULNERABILITY FUNCTION  -----------
-    def plot_vulnerabilities(self, data):
-        for widget in self.canvas_frame.winfo_children():
-            widget.destroy()
+    def plot_vulnerabilities(self, data, graph_type):
+       for widget in self.canvas_frame.winfo_children():
+           widget.destroy()
 
-        fig, ax = plt.subplots(figsize=(6, 4))
-        ax.bar(data.keys(), data.values(), color='tomato')
-        ax.set_title("Vulnerability Scan Results")
-        ax.set_ylabel("Occurrences")
-        ax.set_xlabel("Vulnerability Type")
-        ax.tick_params(axis='x', rotation=45)
+       fig, ax = plt.subplots(figsize=(6, 4))
+       ax.bar(data.keys(), data.values(), color='tomato')
+       ax.set_title(f"{graph_type} Graph Analysis")
+       ax.set_ylabel("Occurrences")
+       ax.set_xlabel("Feature")
+       ax.tick_params(axis='x', rotation=45)
 
-        canvas = FigureCanvasTkAgg(fig, master=self.canvas_frame)
-        canvas.draw()
-        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+       canvas = FigureCanvasTkAgg(fig, master=self.canvas_frame)
+       canvas.draw()
+       canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+    
+    
+#    def plot_vulnerabilities(self, data):
+#        for widget in self.canvas_frame.winfo_children():
+#            widget.destroy()
+#
+#        fig, ax = plt.subplots(figsize=(6, 4))
+#        ax.bar(data.keys(), data.values(), color='tomato')
+#        ax.set_title("Vulnerability Scan Results")
+#        ax.set_ylabel("Occurrences")
+#        ax.set_xlabel("Vulnerability Type")
+#        ax.tick_params(axis='x', rotation=45)
+#
+#        canvas = FigureCanvasTkAgg(fig, master=self.canvas_frame)
+#        canvas.draw()
+#        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
 #  -----------  PLOT VULNERABILITY FUNCTION  -----------
 
