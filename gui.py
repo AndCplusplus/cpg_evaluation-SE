@@ -42,7 +42,7 @@ class VulnerabilityScannerApp:
 #        if self.file_path:
 #            messagebox.showinfo("File Selected", f"Selected: {self.file_path}")
         original_path = filedialog.askopenfilename(
-            filetypes=[("C Source Files", "*.c")]
+            #filetypes=[("C Source Files", "*.c")] # commented out to allow any file type to be uploaded
         )
         if original_path:
             ext = os.path.splitext(original_path)[1].lower()
