@@ -12,7 +12,8 @@ import shutil
 class VulnerabilityScannerApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Vulnerability Scanner")
+        self.root.title("TeamTen - Vulnerability Scanner") # Window title
+        root.geometry("400x300")                           # Window Size - width x height
         self.file_path = None
 
         # Upload Button
