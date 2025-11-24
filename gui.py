@@ -1,6 +1,7 @@
 import os, sys, shutil, glob, subprocess
 import tkinter as tk
 from tkinter import filedialog, messagebox
+from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -10,7 +11,7 @@ import cpg_manipulation
 
 class VulnerabilityScannerApp:
     def __init__(self, root):
-        root.geometry("370x200")
+        root.geometry("1000x1000")
         self.root = root
         self.root.title("TeamTen - Vulnerability Scanner")
         self.file_path = None
@@ -19,7 +20,11 @@ class VulnerabilityScannerApp:
         self.upload_btn = tk.Button(root, text="Upload File", command=self.upload_file)
         self.upload_btn.pack(pady=10)
 
-        # Scan Button
+        # Status Label
+        self.status_label = tk.Label(root, text="No file uploaded yet.", fg="blue")
+        self.status_label.pack(pady=5)
+
+        # Scan Button (still available if you want manual rescan)
         self.scan_btn = tk.Button(root, text="Scan for Vulnerabilities", command=self.scan_file)
         self.scan_btn.pack(pady=10)
 
@@ -30,8 +35,14 @@ class VulnerabilityScannerApp:
         # Select Graph Type
         self.graph_type = tk.StringVar(value="CFG")
         graph_options = ["CFG", "CALL", "AST"]
-        self.graph_menu = tk.OptionMenu(root, self.graph_type, *graph_options)
+        #self.graph_menu = tk.OptionMenu(root, self.graph_type, *graph_options)
+        #self.graph_menu.pack(pady=10)
+        
+        self.graph_menu = ttk.Combobox(root, textvariable=self.graph_type, values=graph_options, state="readonly")
         self.graph_menu.pack(pady=10)
+
+        # Bind change event: automatically rescan when graph type changes
+        self.graph_menu.bind("<<ComboboxSelected>>", lambda e: self.on_graph_change())
 
     # ---------------- Upload File ----------------
     def upload_file(self):
@@ -63,9 +74,12 @@ class VulnerabilityScannerApp:
         try:
             shutil.copy2(original_path, destination_path)
             self.file_path = destination_path
-            messagebox.showinfo("File Uploaded", f"File saved to: {destination_path}")
+            self.status_label.config(text=f"File uploaded: {destination_path}", fg="green")
         except Exception as e:
-            messagebox.showerror("Upload Failed", f"Error: {str(e)}")
+            self.status_label.config(text=f"Upload failed: {str(e)}", fg="red")
+     #       messagebox.showinfo("File Uploaded", f"File saved to: {destination_path}")
+     #   except Exception as e:
+     #       messagebox.showerror("Upload Failed", f"Error: {str(e)}")
 
     # ---------------- Scan File ----------------
     def scan_file(self):
@@ -79,7 +93,7 @@ class VulnerabilityScannerApp:
         # Clean old output dir to avoid Joern error
         if os.path.exists(csv_output_path):
             shutil.rmtree(csv_output_path)
-        #os.makedirs(csv_output_path, exist_ok=True)
+
 
         try:
             subprocess.run(["joern-parse", code_path], check=True)
@@ -104,16 +118,37 @@ class VulnerabilityScannerApp:
 
         self.plot_vulnerabilities(data, selected_graph)
 
+    # ---------------- Auto-trigger on dropdown change ----------------
+    def on_graph_change(self, *args):
+        if self.file_path:   # only rescan if a file is uploaded
+            self.scan_file()
+
     # ---------------- Plot Vulnerabilities ----------------
     def plot_vulnerabilities(self, data, graph_type):
         for widget in self.canvas_frame.winfo_children():
             widget.destroy()
 
         fig, ax = plt.subplots(figsize=(6, 4))
-        ax.bar(data.keys(), data.values(), color='tomato')
+
+        if graph_type == "CFG":
+            # bar chart
+            ax.bar(data.keys(), data.values(), color='tomato')
+            ax.set_ylabel("Occurrences")
+            ax.set_xlabel("Feature")
+
+        elif graph_type == "CALL":
+            # pie chart
+            ax.pie(data.values(), labels=data.keys(), autopct='%1.1f%%', startangle=90)
+            ax.set_ylabel("")
+            ax.set_xlabel("")
+
+        elif graph_type == "AST":
+            # line chart
+            ax.plot(list(data.keys()), list(data.values()), marker='o', color='blue')
+            ax.set_ylabel("Occurrences")
+            ax.set_xlabel("Feature")
+
         ax.set_title(f"{graph_type} Graph Analysis")
-        ax.set_ylabel("Occurrences")
-        ax.set_xlabel("Feature")
         ax.tick_params(axis='x', rotation=45)
 
         canvas = FigureCanvasTkAgg(fig, master=self.canvas_frame)
@@ -124,4 +159,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = VulnerabilityScannerApp(root)
     root.mainloop()
-
