@@ -1,11 +1,11 @@
-import os, sys, shutil, glob, subprocess
+import os, shutil, subprocess
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinter import ttk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import matplotlib.pyplot as plt
 import pandas as pd
 import networkx as nx
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 import cpg_manipulation
 
@@ -15,16 +15,13 @@ class VulnerabilityScannerApp:
         self.root = root
         self.root.title("TeamTen - Vulnerability Scanner")
         self.file_path = None
+        self.graph = None
 
         # Upload Button
         self.upload_btn = tk.Button(root, text="Upload File", command=self.upload_file)
         self.upload_btn.pack(pady=10)
 
-        # Status Label
-        self.status_label = tk.Label(root, text="No file uploaded yet.", fg="blue")
-        self.status_label.pack(pady=5)
-
-        # Scan Button (still available if you want manual rescan)
+        # Scan Button
         self.scan_btn = tk.Button(root, text="Scan for Vulnerabilities", command=self.scan_file)
         self.scan_btn.pack(pady=10)
 
@@ -32,16 +29,12 @@ class VulnerabilityScannerApp:
         self.canvas_frame = tk.Frame(root)
         self.canvas_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Select Graph Type
+        # Graph Type Dropdown
         self.graph_type = tk.StringVar(value="CFG")
         graph_options = ["CFG", "CALL", "AST"]
-        #self.graph_menu = tk.OptionMenu(root, self.graph_type, *graph_options)
-        #self.graph_menu.pack(pady=10)
-        
-        self.graph_menu = ttk.Combobox(root, textvariable=self.graph_type, values=graph_options, state="readonly")
+        self.graph_menu = ttk.Combobox(root, textvariable=self.graph_type,
+                                       values=graph_options, state="readonly")
         self.graph_menu.pack(pady=10)
-
-        # Bind change event: automatically rescan when graph type changes
         self.graph_menu.bind("<<ComboboxSelected>>", lambda e: self.on_graph_change())
 
     # ---------------- Upload File ----------------
@@ -74,12 +67,9 @@ class VulnerabilityScannerApp:
         try:
             shutil.copy2(original_path, destination_path)
             self.file_path = destination_path
-            self.status_label.config(text=f"File uploaded: {destination_path}", fg="green")
+            messagebox.showinfo("File Uploaded", f"File saved to: {destination_path}")
         except Exception as e:
-            self.status_label.config(text=f"Upload failed: {str(e)}", fg="red")
-     #       messagebox.showinfo("File Uploaded", f"File saved to: {destination_path}")
-     #   except Exception as e:
-     #       messagebox.showerror("Upload Failed", f"Error: {str(e)}")
+            messagebox.showerror("Upload Failed", f"Error: {str(e)}")
 
     # ---------------- Scan File ----------------
     def scan_file(self):
@@ -90,10 +80,8 @@ class VulnerabilityScannerApp:
         code_path = "./source/"
         csv_output_path = "./cpg_output/"
 
-        # Clean old output dir to avoid Joern error
         if os.path.exists(csv_output_path):
             shutil.rmtree(csv_output_path)
-
 
         try:
             subprocess.run(["joern-parse", code_path], check=True)
@@ -108,48 +96,44 @@ class VulnerabilityScannerApp:
         cpg_df = cpg_manipulation.process_csv(csv_output_path)
 
         selected_graph = self.graph_type.get()
-        graph = cpg_manipulation.build_graph(cpg_df, selected_graph)
+        self.graph = cpg_manipulation.build_graph(cpg_df, selected_graph)
 
-        # Example: count nodes by label
-        if ':LABEL' in cpg_df["nodes"].columns:
-            data = cpg_df["nodes"][":LABEL"].value_counts().to_dict()
-        else:
-            data = {"No labels found": 0}
+        # Example vulnerability report (replace with actual Joern scan result)
+        vuln_report_df = pd.DataFrame([{
+            'severity': 'HIGH',
+            'type': 'Dangerous function',
+            'filename': 'example.c',
+            'line': 8,
+            'caller': 'main'
+        }])
 
-        self.plot_vulnerabilities(data, selected_graph)
+        vuln_caller = vuln_report_df['caller'][0]
+        color_map = cpg_manipulation.color_nodes(self.graph, vuln_caller)
+
+        # Show graph inside GUI
+        self.plot_graph(self.graph, 'METHOD_FULL_NAME:string', color_map, selected_graph)
+
+        messagebox.showinfo("Graph Displayed", f"{selected_graph} graph shown with vulnerable caller: {vuln_caller}")
 
     # ---------------- Auto-trigger on dropdown change ----------------
-    def on_graph_change(self, *args):
-        if self.file_path:   # only rescan if a file is uploaded
+    def on_graph_change(self):
+        if self.file_path:
             self.scan_file()
 
-    # ---------------- Plot Vulnerabilities ----------------
-    def plot_vulnerabilities(self, data, graph_type):
+    # ---------------- Plot Graphs ----------------
+    def plot_graph(self, graph, feature, node_colors, graph_type):
+        # Clear previous canvas
         for widget in self.canvas_frame.winfo_children():
             widget.destroy()
 
-        fig, ax = plt.subplots(figsize=(6, 4))
+        labels = {node: data.get(feature, node) for node, data in graph.nodes(data=True)}
+        color_map = [node_colors.get(node, 'cyan') for node in graph.nodes()]
 
-        if graph_type == "CFG":
-            # bar chart
-            ax.bar(data.keys(), data.values(), color='tomato')
-            ax.set_ylabel("Occurrences")
-            ax.set_xlabel("Feature")
-
-        elif graph_type == "CALL":
-            # pie chart
-            ax.pie(data.values(), labels=data.keys(), autopct='%1.1f%%', startangle=90)
-            ax.set_ylabel("")
-            ax.set_xlabel("")
-
-        elif graph_type == "AST":
-            # line chart
-            ax.plot(list(data.keys()), list(data.values()), marker='o', color='blue')
-            ax.set_ylabel("Occurrences")
-            ax.set_xlabel("Feature")
-
-        ax.set_title(f"{graph_type} Graph Analysis")
-        ax.tick_params(axis='x', rotation=45)
+        fig, ax = plt.subplots(figsize=(8, 6))
+        pos = nx.spring_layout(graph, seed=42)
+        nx.draw(graph, pos, labels=labels, with_labels=True, ax=ax,
+                node_color=color_map, arrows=True)
+        ax.set_title(f"{graph_type} Graph Visualization")
 
         canvas = FigureCanvasTkAgg(fig, master=self.canvas_frame)
         canvas.draw()
