@@ -40,11 +40,12 @@ class VulnerabilityScannerApp:
     # ---------------- Upload File ----------------
     def upload_file(self):
         original_path = filedialog.askopenfilename()
-        if original_path:
-            ext = os.path.splitext(original_path)[1].lower()
-            if ext not in ['.c']:
-                messagebox.showerror("Invalid File", "Please select a .c file.")
-                return
+        if not original_path:
+            return
+        ext = os.path.splitext(original_path)[1].lower()
+        if ext not in ['.c']:
+            messagebox.showerror("Invalid File", "Please select a .c file.")
+            return
 
         source_dir = os.path.join(os.getcwd(), "source")
         os.makedirs(source_dir, exist_ok=True)
@@ -138,6 +139,25 @@ class VulnerabilityScannerApp:
         canvas = FigureCanvasTkAgg(fig, master=self.canvas_frame)
         canvas.draw()
         canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
+        # --- NEW: Bind click event to show node info ---
+        def on_click(event):
+            if event.inaxes is not None:
+                closest_node = None
+                min_dist = float("inf")
+                for node, (x, y) in pos.items():
+                    dist = (event.xdata - x)**2 + (event.ydata - y)**2
+                    if dist < min_dist:
+                        min_dist = dist
+                        closest_node = node
+
+                if closest_node is not None:
+                    node_data = graph.nodes[closest_node]
+                    info = "\n".join([f"{k}: {v}" for k, v in node_data.items()])
+                    messagebox.showinfo("Node Information",
+                                        f"Node: {closest_node}\n{info}")
+
+        canvas.mpl_connect("button_press_event", on_click)
 
 if __name__ == "__main__":
     root = tk.Tk()
