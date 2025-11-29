@@ -22,6 +22,11 @@ class VulnerabilityScannerApp:
         self.upload_btn = tk.Button(root, text="Upload File", command=self.upload_file)
         self.upload_btn.pack(pady=10)
 
+        # Status Label
+        self.status_label = tk.Text(root, height=1, width=80, background=root.cget("bg"))
+        self.status_label.pack(pady=5)
+        self.status_label.config(state=tk.DISABLED)
+        
         # Scan Button
         self.scan_btn = tk.Button(root, text="Scan for Vulnerabilities", command=self.scan_file)
         self.scan_btn.pack(pady=10)
@@ -68,11 +73,44 @@ class VulnerabilityScannerApp:
 
         try:
             shutil.copy2(original_path, destination_path)
+#            self.file_path = destination_path
+#            messagebox.showinfo("File Uploaded", f"File saved to: {destination_path}")
             self.file_path = destination_path
-            messagebox.showinfo("File Uploaded", f"File saved to: {destination_path}")
+            self.update_status(destination_path)
+        
+        
         except Exception as e:
             messagebox.showerror("Upload Failed", f"Error: {str(e)}")
+    # ---------------- Update Status ----------------
+    def update_status(self, full_path):
+        self.status_label.config(state=tk.NORMAL)
+        self.status_label.delete("1.0", tk.END)
 
+        filename = os.path.basename(full_path)
+
+        self.status_label.insert(tk.END, "Current File: ", "static")
+        self.status_label.insert(tk.END, filename, "filename")
+
+        self.status_label.tag_config("static", foreground="black", justify="center")
+        self.status_label.tag_config("filename", foreground="green", font=("TkDefaultFont", 10, "bold"), justify="center")
+
+        self.status_label.tag_add("center", "1.0", "end")
+        self.status_label.tag_config("center", justify="center")
+        
+        self.status_label.config(state=tk.DISABLED)
+
+    def show_error(self, msg):
+        self.status_label.config(state=tk.NORMAL)
+        self.status_label.delete("1.0", tk.END)
+        self.status_label.insert(tk.END, msg, "error")
+        self.status_label.tag_config("error", foreground="red", justify="center")
+        self.status_label.tag_add("cetner", "1.0", "end")
+        self.status_label.tag_config("center", justify="center")
+        self.status_label.config(state=tk.DISABLED)
+    
+    # ---------------- Update Status ----------------
+
+    
     # ---------------- Scan File ----------------
     def scan_file(self):
         if not self.file_path:
