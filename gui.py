@@ -6,6 +6,7 @@ import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from joern import run_joern_scan, run_joern_parse, run_joern_export
 
 import cpg_manipulation
 
@@ -83,6 +84,13 @@ class VulnerabilityScannerApp:
 
         if os.path.exists(csv_output_path):
             shutil.rmtree(csv_output_path)
+        
+        try:
+            vuln_report_df = run_joern_scan(code_path)
+        except subprocess.CalledProcessError as e:
+            messagebox.showerror("joern-scan Error", f"Joern failed: {e}")
+            return
+
 
         try:
             subprocess.run(["joern-parse", code_path], check=True)
@@ -90,7 +98,7 @@ class VulnerabilityScannerApp:
                 "joern-export", "--repr=all", "--format=neo4jcsv", "--out", csv_output_path
             ], check=True)
         except subprocess.CalledProcessError as e:
-            messagebox.showerror("Joern Error", f"Joern failed: {e}")
+            messagebox.showerror("joern-parse Error", f"Joern failed: {e}")
             return
 
         # Build CPG dataframes
@@ -100,13 +108,13 @@ class VulnerabilityScannerApp:
         self.graph = cpg_manipulation.build_graph(cpg_df, selected_graph)
 
         # Example vulnerability report (replace with actual Joern scan result)
-        vuln_report_df = pd.DataFrame([{
-            'severity': 'HIGH',
-            'type': 'Dangerous function',
-            'filename': 'example.c',
-            'line': 8,
-            'caller': 'main'
-        }])
+        # vuln_report_df = pd.DataFrame([{
+        #     'severity': 'HIGH',
+        #     'type': 'Dangerous function',
+        #     'filename': 'example.c',
+        #     'line': 8,
+        #     'caller': 'main'
+        # }])
 
         vuln_caller = vuln_report_df['caller'][0]
         color_map = cpg_manipulation.color_nodes(self.graph, vuln_caller)

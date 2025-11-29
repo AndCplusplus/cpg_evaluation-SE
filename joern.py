@@ -1,5 +1,6 @@
 import os
 import subprocess
+import pandas as pd
 
 # parameters: directory containing c files to scan and optional boolean overwrite flag which currently defaults to True
 def run_joern_scan(directory, overwrite=True):
@@ -49,7 +50,12 @@ def run_joern_scan(directory, overwrite=True):
                     'result': None,
                     'error': str(e)
                 }
-    return results
+    vuln_df = pd.DataFrame.from_dict(results, orient='index')
+    vreport = parse_result_line(vuln_df.iloc[0,0])
+    vuln_report_df = pd.DataFrame([vreport],
+        columns=['severity', 'type', 'filename', 'line', 'caller']
+    )
+    return vuln_report_df
 
 def parse_result_line(result_line):
     """
