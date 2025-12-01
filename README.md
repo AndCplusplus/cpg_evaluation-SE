@@ -85,7 +85,7 @@ Class Diagram - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/
 Sequence Diagram - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/Sequence-DiagramFinal.jpg">here</a><br />
 Software Test Results - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/Team_10_STP-Completed.pdf">here</a><br />
 YouTube Demo Video - <a href="https://www.youtube.com/watch?v=uKoejHmPt8Y">here</a><br />
-User Manual - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/README.md">here</a><br />**
+User Manual - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/TeamTen%20-%20User%20Manual.pdf">here</a><br />**
 
 
 
