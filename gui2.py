@@ -207,9 +207,9 @@ class VulnerabilityScannerApp:
         # Insert rows from DataFrame                                                            #
         for _, row in self.vuln_report_df.iterrows():                                           #
             tree.insert("", tk.END, values=(                                                    #
-                row.get("method", ""),                                                          #
+                row.get("caller", ""),                                                          #
                 row.get("line", ""),                                                            #
-                row.get("vuln_type", ""),                                                       #
+                row.get("type", ""),                                                            #
                 row.get("severity", "")                                                         #
             ))                                                                                  #
                                                                                                 #
