@@ -19,5 +19,9 @@ Navigate to the directory for the installation and install prerequisites:<br />
 •	sudo ./joern-install.sh –interactive=false<br />
 •	Extract joern-cli.zip<br />
 <br />
+Now install the vulnerability scanner by downloading the repository zip from github and extracting the zip:<br />
+•	wget https://github.com/AndCplusplus/cpg_evaluation-SE/archive/main.zip
+
+<br />
 Usage:<br />
 After installing prerequisites and downloading this repository use the terminal to run the teamten.py
