@@ -1,3 +1,5 @@
+[![Scanner Demo](https://i9.ytimg.com/vi_webp/uKoejHmPt8Y/mq1.webp?sqp=CKDFuMkG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgRSgmMA8=&rs=AOn4CLDtpET5GecYZqztGKV10IeRAmXPPw)](https://youtu.be/uKoejHmPt8Y)
+<br />
 Document Links: [install](#install) / [usage](#usage)
 <img width="1024" height="1024" alt="A graphic-heavy logo" src="https://github.com/user-attachments/assets/57f63bf5-723c-404d-9dbb-34dbb8d74019" />
 <center> Vulnerability Scanner<br />
