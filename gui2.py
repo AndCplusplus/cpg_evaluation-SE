@@ -6,8 +6,7 @@ import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from joern import run_joern_scan, run_joern_parse, run_joern_export
-
+from joern import run_joern_scan
 import cpg_manipulation
 
 class VulnerabilityScannerApp:
@@ -17,6 +16,10 @@ class VulnerabilityScannerApp:
         self.root.title("TeamTen - Vulnerability Scanner")
         self.file_path = None
         self.graph = None
+
+        # Store scan results once
+        self.vuln_report_df = None
+        self.cpg_df = None
 
         # Upload Button
         self.upload_btn = tk.Button(root, text="Upload File", command=self.upload_file)
@@ -60,6 +63,7 @@ class VulnerabilityScannerApp:
 
         self.vuln_table.pack(fill=tk.X)
 
+    # ---------------- Upload File ----------------
     def upload_file(self):
         original_path = filedialog.askopenfilename()
         if not original_path:
@@ -72,6 +76,7 @@ class VulnerabilityScannerApp:
         source_dir = os.path.join(os.getcwd(), "source")
         os.makedirs(source_dir, exist_ok=True)
 
+        # Clean source dir
         for filename in os.listdir(source_dir):
             file_path = os.path.join(source_dir, filename)
             try:
@@ -116,6 +121,7 @@ class VulnerabilityScannerApp:
         self.status_label.tag_config("center", justify="center")
         self.status_label.config(state=tk.DISABLED)
 
+    # ---------------- Scan File Once ----------------
     def scan_file(self):
         if not self.file_path:
             messagebox.showwarning("No File", "Please upload a file first.")
@@ -128,7 +134,7 @@ class VulnerabilityScannerApp:
             shutil.rmtree(csv_output_path)
 
         try:
-            vuln_report_df = run_joern_scan(code_path)
+            self.vuln_report_df = run_joern_scan(code_path)
         except subprocess.CalledProcessError as e:
             messagebox.showerror("joern-scan Error", f"Joern failed: {e}")
             return
@@ -142,17 +148,25 @@ class VulnerabilityScannerApp:
             messagebox.showerror("joern-parse Error", f"Joern failed: {e}")
             return
 
-        cpg_df = cpg_manipulation.process_csv(csv_output_path)
-        selected_graph = self.graph_type.get()
-        self.graph = cpg_manipulation.build_graph(cpg_df, selected_graph)
+        # Store CPG dataframes once
+        self.cpg_df = cpg_manipulation.process_csv(csv_output_path)
 
-        vuln_caller = vuln_report_df['caller'][0]
+        # Build initial graph (default CFG)
+        self.build_and_plot_graph()
+        self.populate_vulnerability_table(self.vuln_report_df)
+
+    # ---------------- Build Graph from Stored Data ----------------
+    def build_and_plot_graph(self):
+        if self.cpg_df is None or self.vuln_report_df is None:
+            return
+
+        selected_graph = self.graph_type.get()
+        self.graph = cpg_manipulation.build_graph(self.cpg_df, selected_graph)
+
+        vuln_caller = self.vuln_report_df['caller'][0]
         color_map = cpg_manipulation.color_nodes(self.graph, vuln_caller)
 
         self.plot_graph(self.graph, 'METHOD_FULL_NAME:string', color_map, selected_graph)
-        self.populate_vulnerability_table(vuln_report_df)
-
-        messagebox.showinfo("Graph Displayed", f"{selected_graph} graph shown with vulnerable caller: {vuln_caller}")
 
     def populate_vulnerability_table(self, df):
         for row in self.vuln_table.get_children():
@@ -166,10 +180,12 @@ class VulnerabilityScannerApp:
                 row.get("severity", "N/A")
             ))
 
+    # ---------------- Dropdown Change ----------------
     def on_graph_change(self):
-        if self.file_path:
-            self.scan_file()
+        if self.cpg_df is not None:
+            self.build_and_plot_graph()
 
+    # ---------------- Plot Graphs ----------------
     def plot_graph(self, graph, feature, node_colors, graph_type):
         for widget in self.canvas_frame.winfo_children():
             widget.destroy()
@@ -208,4 +224,4 @@ class VulnerabilityScannerApp:
 if __name__ == "__main__":
     root = tk.Tk()
     app = VulnerabilityScannerApp(root)
-    root.mainloop()
+    root
