@@ -34,7 +34,8 @@ Navigate to the directory for the installation and install prerequisites:<br />
 <br />
 13. Now install the vulnerability scanner by downloading the repository zip from github and extracting the zip:<br />
     •	wget https://github.com/AndCplusplus/cpg_evaluation-SE/archive/main.zip
-
+<br /><br /><br />
+We have included .c files for testing. They are located in the "codebase" folder
 <br /><br /><br /><br /><br /><br />
 <a name="usage"></a>Usage:<br />
 After installing prerequisites and downloading this repository use the terminal to run the teamten.py
