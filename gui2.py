@@ -47,6 +47,12 @@ class VulnerabilityScannerApp:
         self.canvas_frame = tk.Frame(root)
         self.canvas_frame.pack(fill=tk.BOTH, expand=True)
 
+        # Table
+        self.table_frame = tk.Frame(root)
+        self.table_frame.pack(fill=tk.BOTH, expand=True)
+
+
+    
     # ---------------- Upload File ----------------
     def upload_file(self):
         original_path = filedialog.askopenfilename()
@@ -173,6 +179,42 @@ class VulnerabilityScannerApp:
         else:
             messagebox.showinfo("Graph Displayed", f"{self.graph_type.get()} graph shown.")
 
+
+
+
+
+    # ---------------- Build Table ---------------------------------
+    
+    def show_vuln_table(self):                                                                  #
+        # Clear previous table                                                                  #
+                                                                                                #
+        for widget in self.table_frame.winfo_children():                                        #
+            widget.destroy()                                                                    #
+                                                                                                #
+        if not isinstance(self.vuln_report_df, pd.DataFrame) or self.vuln_report_df.empty:      #
+            tk.Label(self.table_frame, text="No vulnerabilities found").pack()                  #
+            return                                                                              #
+                                                                                                #
+        # Create Treeview                                                                       #
+        columns = ("Method", "Line", "Type", "Severity")                                        #
+        tree = ttk.Treeview(self.table_frame, columns=columns, show="headings")                 #
+                                                                                                #
+        # Define headings                                                                       #
+        for col in columns:                                                                     #
+            tree.heading(col, text=col)                                                         #
+            tree.column(col, width=150, anchor="center")                                        #
+                                                                                                #
+        # Insert rows from DataFrame                                                            #
+        for _, row in self.vuln_report_df.iterrows():                                           #
+            tree.insert("", tk.END, values=(                                                    #
+                row.get("method", ""),                                                          #
+                row.get("line", ""),                                                            #
+                row.get("vuln_type", ""),                                                       #
+                row.get("severity", "")                                                         #
+            ))                                                                                  #
+                                                                                                #
+        tree.pack(fill=tk.BOTH, expand=True)                                                    #
+
     # ---------------- Build & Plot from stored data ----------------
     def build_and_plot_graph(self):
         if self.cpg_df is None:
@@ -243,6 +285,7 @@ class VulnerabilityScannerApp:
 
         canvas.mpl_connect("button_press_event", on_click)
         plt.close(fig)  # prevent memory growth across redraws
+        self.show_vuln_table()                                                                   #
 
 if __name__ == "__main__":
     root = tk.Tk()
