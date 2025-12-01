@@ -1,4 +1,4 @@
-Document Links: [install](#install) / [usage](#usage) / [demo](#demo)
+Document Links: [install](#install) / [usage](#usage) / [demo](#demo) / [submission](#submit)
 <img width="1024" height="1024" alt="A graphic-heavy logo" src="https://github.com/user-attachments/assets/57f63bf5-723c-404d-9dbb-34dbb8d74019" />
 <center> Vulnerability Scanner<br />
 Group project for Software Engineering<br /><br />
@@ -68,11 +68,25 @@ Here is a closer look at the table:
 
 
 
-
+<br /><br /><br /><br /><br /><br /><br />
 
 
 <a name="demo"></a>Demo:<br />
 [![Scanner Demo](https://i9.ytimg.com/vi_webp/uKoejHmPt8Y/mq1.webp?sqp=CKDFuMkG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgRSgmMA8=&rs=AOn4CLDtpET5GecYZqztGKV10IeRAmXPPw)](https://youtu.be/uKoejHmPt8Y)
+
+
+
+<br /><br /><br /><br /><br /><br /><br />
+
+
+**<ins><a name="submit"></a>Submissions:<br /></ins>**
+**Shared Folder(test files) - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/tree/main/codebase">here</a><br />
+Class Diagram - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/CPGCLASS.drawio.pdf">here</a><br />
+Sequence Diagram - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/Sequence-DiagramFinal.jpg">here</a><br />
+Software Test Results - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/Team_10_STP-Completed.pdf">here</a><br />
+YouTube Demo Video - <a href="https://www.youtube.com/watch?v=uKoejHmPt8Y">here</a><br />
+User Manual - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/README.md">here</a><br />**
+
 
 
 
