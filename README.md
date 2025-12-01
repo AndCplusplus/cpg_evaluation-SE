@@ -12,17 +12,17 @@ Navigate to the directory for the installation and install prerequisites:<br />
 2.	sudo apt install curl<br />
      - Provides the curl command-line tool, used to download files or interact with web APIs. It’s often needed for fetching scripts or data (like Joern’s installer).
 3.	sudo apt install python3<br />
-     - Installs the Python interpreter itself. Everything else depends on this.
+     - Installs the Python interpreter. Everything else depends on this.
 4.	sudo apt install python3-tk<br />
-     - Provides the Tkinter GUI toolkit bindings for Python. This is what your app uses to create windows, buttons, dropdowns, and the canvas.<br />
+     - Provides the Tkinter GUI toolkit bindings for Python. This is what our app uses to create windows, buttons, dropdowns, and the canvas.<br />
 5.	sudo apt install python3-matplotlib<br />
-     - Installs Matplotlib, the plotting library you use to visualize graphs inside the Tkinter canvas.<br />
+     - Installs Matplotlib, the plotting library used to visualize graphs inside the Tkinter canvas.<br />
 6.	sudo apt install python3-pandas<br />
-     - Installs Pandas, which you use to store and manipulate vulnerability reports
+     - Installs Pandas, which is used to store and manipulate vulnerability reports
 7.	sudo apt install python3-networkx<br />
-     - Installs NetworkX, the graph library you use to build CFG, CALL, and AST graphs from Joern’s CPG data.
+     - Installs NetworkX, the graph library is used to build CFG, CALL, and AST graphs from Joern’s CPG data.
 8.	sudo apt install -y openjdk-17-jdk<br />
-     - Joern is built on the JVM (Java Virtual Machine). You need Java 17 to run Joern’s CLI tools (joern-parse, joern-export, etc.)
+     - Joern is built on the JVM (Java Virtual Machine). Java 17 is needed to run Joern’s CLI tools (joern-parse, joern-export, etc.)
 9.	wget https://github.com/joernio/joern/releases/download/v4.0.324/joern-install.sh<br />
      - Downloads Joern’s installer script.
 10.	sudo chmod +x joern-install.sh<br />
