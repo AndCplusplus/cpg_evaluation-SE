@@ -1,4 +1,4 @@
-[install](#install) / [usage](#usage)
+Document Links: [install](#install) / [usage](#usage)
 <img width="1024" height="1024" alt="A graphic-heavy logo" src="https://github.com/user-attachments/assets/57f63bf5-723c-404d-9dbb-34dbb8d74019" />
 <center> Vulnerability Scanner<br />
 Group project for Software Engineering<br /><br />
@@ -24,7 +24,7 @@ Now install the vulnerability scanner by downloading the repository zip from git
 •	wget https://github.com/AndCplusplus/cpg_evaluation-SE/archive/main.zip
 
 <br />
-### <a name="usage"></a>Usage:<br />
+<a name="usage"></a>Usage:<br />
 After installing prerequisites and downloading this repository use the terminal to run the teamten.py
 
 In a terminal window run teamten.py:
