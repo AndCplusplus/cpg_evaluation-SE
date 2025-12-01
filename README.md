@@ -7,23 +7,35 @@ Group project for Software Engineering<br /><br />
 
 <a name="install">Installation</a>:<br />
 Navigate to the directory for the installation and install prerequisites:<br />
-•	sudo apt update<br />
-•	sudo apt install curl<br />
-•	sudo apt install python3<br />
-•	sudo apt install python3-tk<br />
-•	sudo apt install python3-matplotlib<br />
-•	sudo apt install python3-pandas<br />
-•	sudo apt install python3-networkx<br />
-•	sudo apt install -y openjdk-17-jdk<br />
-•	wget https://github.com/joernio/joern/releases/download/v4.0.324/joern-install.sh<br />
-•	sudo chmod +x joern-install.sh<br />
-•	sudo ./joern-install.sh –interactive=false<br />
-•	Extract joern-cli.zip<br />
+1.	sudo apt update<br />
+     - Updates the package index so your system knows the latest versions of software available. Without this, installs may fail or pull outdated versions.
+2.	sudo apt install curl<br />
+     - Provides the curl command-line tool, used to download files or interact with web APIs. It’s often needed for fetching scripts or data (like Joern’s installer).
+3.	sudo apt install python3<br />
+     - Installs the Python interpreter itself. Everything else depends on this.
+4.	sudo apt install python3-tk<br />
+     - Provides the Tkinter GUI toolkit bindings for Python. This is what your app uses to create windows, buttons, dropdowns, and the canvas.<br />
+5.	sudo apt install python3-matplotlib<br />
+     - Installs Matplotlib, the plotting library you use to visualize graphs inside the Tkinter canvas.<br />
+6.	sudo apt install python3-pandas<br />
+     - Installs Pandas, which you use to store and manipulate vulnerability reports
+7.	sudo apt install python3-networkx<br />
+     - Installs NetworkX, the graph library you use to build CFG, CALL, and AST graphs from Joern’s CPG data.
+8.	sudo apt install -y openjdk-17-jdk<br />
+     - Joern is built on the JVM (Java Virtual Machine). You need Java 17 to run Joern’s CLI tools (joern-parse, joern-export, etc.)
+9.	wget https://github.com/joernio/joern/releases/download/v4.0.324/joern-install.sh<br />
+     - Downloads Joern’s installer script.
+10.	sudo chmod +x joern-install.sh<br />
+     - Makes the installer script executable.
+11.	sudo ./joern-install.sh –interactive=false<br />
+     - Runs the installer in non-interactive mode, so Joern is set up automatically without prompting you.
+12. Extract joern-cli.zip<br />
+     - Joern’s CLI tools are packaged in a zip file. Extracting it gives you access to commands, which our app calls to generate the CPG data.
 <br />
-Now install the vulnerability scanner by downloading the repository zip from github and extracting the zip:<br />
-•	wget https://github.com/AndCplusplus/cpg_evaluation-SE/archive/main.zip
+13. Now install the vulnerability scanner by downloading the repository zip from github and extracting the zip:<br />
+    •	wget https://github.com/AndCplusplus/cpg_evaluation-SE/archive/main.zip
 
-<br />
+<br /><br /><br /><br /><br /><br />
 <a name="usage"></a>Usage:<br />
 After installing prerequisites and downloading this repository use the terminal to run the teamten.py
 
