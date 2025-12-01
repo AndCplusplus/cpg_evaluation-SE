@@ -128,7 +128,7 @@ class VulnerabilityScannerApp:
         # Fresh export directory
         if os.path.exists(csv_output_path):
             shutil.rmtree(csv_output_path)
-        os.makedirs(csv_output_path, exist_ok=True)
+        # os.makedirs(csv_output_path, exist_ok=True) # do not make directory
 
         # 1) Vulnerability scan -> DataFrame
         try:
