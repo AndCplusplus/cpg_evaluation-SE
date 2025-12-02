@@ -69,15 +69,14 @@ Here is a closer look at the table:
 
 
 
-<br /><br /><br /><br /><br /><br /><br />
-
+<br /><br /><br /><br />
 
 <a name="demo"></a>Demo:<br />
 [![Scanner Demo](https://i9.ytimg.com/vi_webp/uKoejHmPt8Y/mq1.webp?sqp=CKDFuMkG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgRSgmMA8=&rs=AOn4CLDtpET5GecYZqztGKV10IeRAmXPPw)](https://youtu.be/uKoejHmPt8Y)
 
 
 
-<br /><br /><br /><br /><br /><br /><br />
+<br /><br /><br />
 
 
 **:open_file_folder:<ins><a name="submit"></a>Submissions:<br /></ins>**
@@ -90,6 +89,6 @@ Here is a closer look at the table:
 
 
 
-<br /> <br /> <br /> <br /> <br /> <br /> <br /> 
+<br /> <br /> <br /> <br />
 TEAM TEN<br />
-<a href="https://github.com/OrangeXR">Luis M</a> - <a href="https://github.com/soldudo">Nico G</a> - <a href="https://github.com/gabreuhl">Gabriel A</a>
+<a href="https://github.com/OrangeXR"><img width="30" height="30" alt="A graphic-heavy logo" src="https://avatars.githubusercontent.com/u/77978673?s=64&v=4" />Luis M</a> - <a href="https://github.com/soldudo"><img width="30" height="30" alt="A graphic-heavy logo" src="https://avatars.githubusercontent.com/u/88810277?s=64&v=4" />Nico G</a> - <a href="https://github.com/gabreuhl"><img width="30" height="30" alt="A graphic-heavy logo" src="https://avatars.githubusercontent.com/u/195609199?s=64&v=4" />Gabriel A</a>
