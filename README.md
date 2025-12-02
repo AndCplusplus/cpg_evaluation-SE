@@ -7,36 +7,37 @@ Group project for Software Engineering<br /><br />
 
 <a name="install">Installation</a>:<br />
 Navigate to the directory for the installation and install prerequisites:<br />
-1.	sudo apt update<br />
+1.	```sudo apt update```<br />
      - Updates the package index so your system knows the latest versions of software available. Without this, installs may fail or pull outdated versions.
-2.	sudo apt install curl<br />
+2.	```sudo apt install curl```<br />
      - Provides the curl command-line tool, used to download files or interact with web APIs. It’s often needed for fetching scripts or data (like Joern’s installer).
-3.	sudo apt install python3<br />
+3.	```sudo apt install python3```<br />
      - Installs the Python interpreter. Everything else depends on this.
-4.	sudo apt install python3-tk<br />
+4.	```sudo apt install python3-tk```<br />
      - Provides the Tkinter GUI toolkit bindings for Python. This is what our app uses to create windows, buttons, dropdowns, and the canvas.<br />
-5.	sudo apt install python3-matplotlib<br />
+5.	```sudo apt install python3-matplotlib```<br />
      - Installs Matplotlib, the plotting library used to visualize graphs inside the Tkinter canvas.<br />
-6.	sudo apt install python3-pandas<br />
+6.	```sudo apt install python3-pandas```<br />
      - Installs Pandas, which is used to store and manipulate vulnerability reports
-7.	sudo apt install python3-networkx<br />
+7.	```sudo apt install python3-networkx```<br />
      - Installs NetworkX, the graph library is used to build CFG, CALL, and AST graphs from Joern’s CPG data.
-8.	sudo apt install -y openjdk-17-jdk<br />
+8.	```sudo apt install -y openjdk-17-jdk```<br />
      - Joern is built on the JVM (Java Virtual Machine). Java 17 is needed to run Joern’s CLI tools (joern-parse, joern-export, etc.)
-9.	wget https://github.com/joernio/joern/releases/download/v4.0.324/joern-install.sh<br />
+9.	```wget https://github.com/joernio/joern/releases/download/v4.0.324/joern-install.sh```<br />
      - Downloads Joern’s installer script.
-10.	sudo chmod +x joern-install.sh<br />
+10.	```sudo chmod +x joern-install.sh```<br />
      - Makes the installer script executable.
-11.	sudo ./joern-install.sh –interactive=false<br />
+11.	```sudo ./joern-install.sh –interactive=false```<br />
      - Runs the installer in non-interactive mode, so Joern is set up automatically without prompting you.
 12. Extract joern-cli.zip<br />
-     - Joern’s CLI tools are packaged in a zip file. Extracting it gives you access to commands, which our app calls to generate the CPG data.
-<br />
+     - Joern’s CLI tools are packaged in a zip file. Extracting it gives you access to commands, which our app calls to generate the CPG data.<br />
 13. Now install the vulnerability scanner by downloading the repository zip from github and extracting the zip:<br />
-    •	wget https://github.com/AndCplusplus/cpg_evaluation-SE/archive/main.zip
-<br /><br /><br />
-We have included .c files for testing. They are located in the "codebase" folder
-<br /><br /><br /><br /><br /><br />
+    - ```wget https://github.com/AndCplusplus/cpg_evaluation-SE/archive/main.zip```<br />
+<br /><br />
+> [!NOTE]
+>We have included .c files for testing. They are located in the "codebase" folder
+
+<br /><br />
 <a name="usage"></a>Usage:<br />
 After installing prerequisites and downloading this repository use the terminal to run the teamten.py
 
@@ -79,13 +80,13 @@ Here is a closer look at the table:
 <br /><br /><br /><br /><br /><br /><br />
 
 
-**<ins><a name="submit"></a>Submissions:<br /></ins>**
-**Shared Folder(test files) - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/tree/main/codebase">here</a><br />
-Class Diagram - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/CPGCLASS.drawio.pdf">here</a><br />
-Sequence Diagram - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/Sequence-DiagramFinal.jpg">here</a><br />
-Software Test Results - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/Team_10_STP-Completed.pdf">here</a><br />
-YouTube Demo Video - <a href="https://www.youtube.com/watch?v=uKoejHmPt8Y">here</a><br />
-User Manual - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/TeamTen%20-%20User%20Manual.pdf">here</a><br />**
+**:open_file_folder:<ins><a name="submit"></a>Submissions:<br /></ins>**
+- [x] Shared Folder(test files) - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/tree/main/codebase">here</a><br />
+- [x] Class Diagram - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/CPGCLASS.drawio.pdf">here</a><br />
+- [x] Sequence Diagram - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/Sequence-DiagramFinal.jpg">here</a><br />
+- [x] Software Test Results - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/Team_10_STP-Completed.pdf">here</a><br />
+- [x] YouTube Demo Video - <a href="https://www.youtube.com/watch?v=uKoejHmPt8Y">here</a><br />
+- [x] User Manual - <a href="https://github.com/AndCplusplus/cpg_evaluation-SE/blob/main/TeamTen%20-%20User%20Manual.pdf">here</a><br />
 
 
 
