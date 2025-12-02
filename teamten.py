@@ -152,9 +152,6 @@ class VulnerabilityScannerApp:
             subprocess.run(["joern-parse", code_path], check=True)
             subprocess.run(["joern-export", "--repr=all", "--format=neo4jcsv", "--out", csv_output_path], check=True)
 
-            # Or if you prefer the imported wrappers:
-            # run_joern_parse(code_path)
-            # run_joern_export(repr_type="all", fmt="neo4jcsv", out_dir=csv_output_path)
         except subprocess.CalledProcessError as e:
             messagebox.showerror("joern-parse/export Error", f"Joern failed: {e}")
             return
@@ -284,7 +281,7 @@ class VulnerabilityScannerApp:
                                         f"Node: {closest_node}\n{info}")
 
         canvas.mpl_connect("button_press_event", on_click)
-        plt.close(fig)  # prevent memory growth across redraws
+        plt.close(fig)                                                                            # prevent memory growth across redraws
         self.show_vuln_table()                                                                   #
 
 if __name__ == "__main__":
